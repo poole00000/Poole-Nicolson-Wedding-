@@ -7,35 +7,23 @@
   <meta name="description" content="Share your mailing address so Christopher Poole & Halifax Nicolson can send wedding invitations!" />
   <style>
     :root{
-      --vt-green:#0b5d1e;        /* plate green */
-      --vt-green-dark:#084819;   /* inner rail */
-      --vt-rail:#0f6e2a;         /* outer rail */
-      --paper:#ffffff;           /* lettering white */
-      --ink:#0a0a0a;             /* body text */
-      --ring:rgba(11,93,30,.25);
-      --panel:#f8fff9;
+      --vt-green:#0b5d1e; --vt-green-dark:#084819; --vt-rail:#0f6e2a;
+      --paper:#ffffff; --ink:#0a0a0a; --ring:rgba(11,93,30,.25); --panel:#f8fff9;
     }
     html,body{height:100%;margin:0}
     body{
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      color:var(--ink);
-      background:
-        radial-gradient(1200px 600px at 20% -10%, rgba(11,93,30,.15), transparent),
-        radial-gradient(900px 500px at 100% 10%, rgba(19,94,53,.12), transparent),
-        linear-gradient(180deg,#e9f3ec 0%,#e0efe6 100%);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:var(--ink);
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(11,93,30,.15), transparent),
+                  radial-gradient(900px 500px at 100% 10%, rgba(19,94,53,.12), transparent),
+                  linear-gradient(180deg,#e9f3ec 0%,#e0efe6 100%);
     }
     .wrap{max-width:880px;margin:0 auto;padding:40px 16px;}
     .plate{
-      background:var(--vt-green);
-      color:var(--paper);
-      border-radius:18px;
+      background:var(--vt-green); color:var(--paper); border-radius:18px;
       box-shadow:0 18px 40px rgba(0,0,0,.18), inset 0 0 0 6px var(--vt-green-dark), inset 0 0 0 10px var(--vt-rail);
       overflow:hidden; position:relative;
     }
-    .plate::before,.plate::after{
-      content:""; position:absolute; left:0; right:0; height:14px;
-      background:linear-gradient(180deg,#09712a,#0b5d1e);
-    }
+    .plate::before,.plate::after{content:""; position:absolute; left:0; right:0; height:14px; background:linear-gradient(180deg,#09712a,#0b5d1e)}
     .plate::before{top:0} .plate::after{bottom:0}
     header{text-align:center; padding:26px 24px 0 24px; position:relative;}
     header .eyebrow{letter-spacing:.18em; text-transform:uppercase; font-size:12px; opacity:.95}
@@ -45,35 +33,26 @@
     .section{padding:0 18px 20px 18px;}
     .section + .section{padding-top:8px;}
     .fieldbox{
-      background:var(--panel);
-      border-radius:12px;
-      padding:16px;
-      box-shadow:inset 0 0 0 2px #cfe8d6, inset 0 2px 6px rgba(0,0,0,.06);
-      color:#0c3a1a;
+      background:var(--panel); border-radius:12px; padding:16px;
+      box-shadow:inset 0 0 0 2px #cfe8d6, inset 0 2px 6px rgba(0,0,0,.06); color:#0c3a1a;
     }
     .legend{display:flex; align-items:center; gap:.5rem; font-weight:800; color:#0c3a1a; margin:2px 0 10px 0; font-size:15px; text-transform:uppercase; letter-spacing:.06em}
     .grid{display:grid; gap:14px}
-    @media(min-width:720px){
-      .grid.cols-2{grid-template-columns:1fr 1fr}
-      .grid.cols-3{grid-template-columns:1fr 1fr 1fr}
-    }
+    @media(min-width:720px){ .grid.cols-2{grid-template-columns:1fr 1fr} .grid.cols-3{grid-template-columns:1fr 1fr 1fr} }
     label{font-size:13px; color:#0c3a1a; font-weight:800; text-transform:uppercase; letter-spacing:.04em}
     .req:after{content:"*"; color:#fefefe; background:#0d7e2e; border-radius:6px; padding:0 6px; margin-left:6px}
     input,select,textarea{
-      width:100%; box-sizing:border-box; margin-top:6px; border-radius:10px;
-      border:1px solid #9bd0a8; padding:10px 12px; font-size:15px; background:#fff; color:#10351f;
-      outline:none; transition:box-shadow .15s, border-color .15s;
+      width:100%; box-sizing:border-box; margin-top:6px; border-radius:10px; border:1px solid #9bd0a8;
+      padding:10px 12px; font-size:15px; background:#fff; color:#10351f; outline:none; transition:box-shadow .15s, border-color .15s;
     }
     input:focus,select:focus,textarea:focus{border-color:var(--vt-green); box-shadow:0 0 0 4px var(--ring)}
     .row{display:flex; align-items:center; gap:10px}
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-      padding:12px 18px; border-radius:12px; border:2px solid #e7f5ea;
-      background:var(--paper); color:var(--vt-green); font-weight:800; text-transform:uppercase; letter-spacing:.06em;
-      box-shadow:0 8px 18px rgba(11,93,30,.25); cursor:pointer;
+      padding:12px 18px; border-radius:12px; border:2px solid #e7f5ea; background:var(--paper); color:var(--vt-green);
+      font-weight:800; text-transform:uppercase; letter-spacing:.06em; box-shadow:0 8px 18px rgba(11,93,30,.25); cursor:pointer;
     }
     .btn:hover{background:#f5fff7; border-color:#fff}
-    .btn.secondary{background:transparent; color:#e7f5ea; border-color:#a7e0b4}
     .banner{display:none; margin:0 18px 16px 18px; border-radius:10px; background:#e9f7ec; color:#0e5a2a; border:1px solid #c6e6cf; padding:12px 14px;}
     footer{text-align:center; color:#e6f7ea; font-size:12px; padding:10px 18px 22px 18px}
   </style>
@@ -173,47 +152,22 @@
 
         <div class="row" style="padding:14px 2px 18px 2px">
           <button type="submit" class="btn">Submit address</button>
-          <button id="addAnother" type="button" class="btn secondary" style="display:none">Add another</button>
+          <button id="addAnother" type="button" class="btn" style="display:none">Add another</button>
         </div>
       </form>
 
-      <!-- Admin panel is hidden; open with ?admin=1 or Ctrl+M (no on-page mention) -->
-      <section id="manage" class="section" style="display:none">
-        <div class="legend">Manage submissions</div>
-        <p style="margin:8px 0 14px 0; color:#d8efe0">Submissions are cached locally unless you connect a backend endpoint. Export anytime:</p>
-        <div class="row" style="flex-wrap:wrap">
-          <button id="btnExportCSV" class="btn secondary">Download CSV</button>
-          <button id="btnCopyTSV" class="btn secondary">Copy for Excel</button>
-          <button id="btnViewJSON" class="btn secondary">View JSON</button>
-          <button id="btnClear" class="btn secondary" style="border-color:#ffd1d1;color:#ffe2e2">Clear local data</button>
-        </div>
-        <div id="adminStatus" style="margin-top:10px; color:#cfe8d6; font-size:14px"></div>
-      </section>
-
-      <footer>Christopher & Halifax • Vermont • v-clean-upload</footer>
+      <footer>Christopher & Halifax • Vermont</footer>
     </div>
   </div>
 
   <script>
-    /* Optional backend endpoint (e.g., Google Apps Script URL) */
-    const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbzYOM0KiB0dYp2VI9pKL2Lb7Q4c6zVVPdb3r0uULd07TDz2UV-WrGazG-DPBF1sAzHy3Q/exec';
+    /* Paste your existing Google Apps Script Web App URL (ends with /exec) */
+    const ENDPOINT_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';
 
     const STORAGE_KEY = 'wedding-address-submissions:v3';
     const form = document.getElementById('addressForm');
     const successBanner = document.getElementById('successBanner');
     const addAnotherBtn = document.getElementById('addAnother');
-    const manage = document.getElementById('manage');
-    const adminStatus = document.getElementById('adminStatus');
-
-    // Admin toggle by query or Ctrl+M — hidden from page
-    const params = new URLSearchParams(location.search);
-    function setAdminVisible(v){ manage.style.display = v ? 'block' : 'none'; }
-    setAdminVisible(params.get('admin') === '1');
-    window.addEventListener('keydown', (e)=>{
-      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'm'){
-        setAdminVisible(manage.style.display==='none');
-      }
-    });
 
     function loadLocal(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch{ return []; } }
     function saveLocal(rows){ localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); }
@@ -222,7 +176,7 @@
       return [new Date().toISOString(), d.firstName||'', d.lastName||'', d.household||'', d.address1||'', d.address2||'', d.city||'', d.state||'', d.postal||'', d.country||'', d.email||'', d.phone||'', d.notes||'', d.consent ? 'Yes' : 'No'];
     }
     function formToObject(fd){
-      const obj = {}; for(const [k,v] of fd.entries()) obj[k] = (v||'').toString().trim();
+      const obj = {}; for (const [k,v] of fd.entries()) obj[k] = (v||'').toString().trim();
       obj.consent = document.getElementById('consent').checked;
       return obj;
     }
@@ -230,9 +184,12 @@
     async function postToEndpoint(payload){
       if(!ENDPOINT_URL) return { ok:false, skipped:true };
       try{
-        const res = await fetch(ENDPOINT_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
-        if(!res.ok) throw new Error('Network response was not ok');
-        return await res.json();
+        const res = await fetch(ENDPOINT_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        try { return await res.json(); } catch { return { ok: res.ok }; }
       }catch(err){
         console.warn('Endpoint post failed:', err);
         return { ok:false, error:String(err) };
@@ -254,7 +211,9 @@
       saveLocal(rows);
 
       const r = await postToEndpoint(payload);
-      if(!r.ok && !r.skipped){ adminStatus.textContent = 'Could not reach backend; saved locally. You can export from Manage panel.'; }
+      if(!r.ok && !r.skipped){
+        console.warn('Saved locally; could not reach Sheets right now.');
+      }
 
       successBanner.style.display = 'block';
       addAnotherBtn.style.display = 'inline-flex';
@@ -262,47 +221,10 @@
       addAnotherBtn.scrollIntoView({behavior:'smooth', block:'center'});
     });
 
-    document.getElementById('addAnother').addEventListener('click', ()=>{
+    addAnotherBtn.addEventListener('click', ()=>{
       successBanner.style.display = 'none';
       addAnotherBtn.style.display = 'none';
       form.scrollIntoView({behavior:'smooth', block:'start'});
-    });
-
-    // Admin actions
-    function toCSV(rows){
-      const header = ['Timestamp','First Name','Last Name','Household','Address 1','Address 2','City','State','Postal','Country','Email','Phone','Notes','Consent'];
-      const esc = (v)=> '"' + String(v).replace(/"/g,'""') + '"';
-      return [header.map(esc).join(','), ...rows.map(r => r.map(esc).join(','))].join('\n');
-    }
-    function download(filename, text){
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob([text], {type:'text/plain'}));
-      a.download = filename; document.body.appendChild(a); a.click(); a.remove();
-    }
-    document.getElementById('btnExportCSV').addEventListener('click', ()=>{
-      const rows = loadLocal();
-      if(!rows.length){ adminStatus.textContent = 'No local submissions yet.'; return; }
-      download('wedding-addresses.csv', toCSV(rows));
-      adminStatus.textContent = 'CSV downloaded.';
-    });
-    document.getElementById('btnCopyTSV').addEventListener('click', async ()=>{
-      const rows = loadLocal();
-      if(!rows.length){ adminStatus.textContent = 'No local submissions yet.'; return; }
-      const header = ['Timestamp','First Name','Last Name','Household','Address 1','Address 2','City','State','Postal','Country','Email','Phone','Notes','Consent'];
-      const tsv = [header.join('\t'), ...rows.map(r => r.join('\t'))].join('\n');
-      try{ await navigator.clipboard.writeText(tsv); adminStatus.textContent='Copied to clipboard.'; }
-      catch{ adminStatus.textContent = 'Copy failed. Your browser may block clipboard access.'; }
-    });
-    document.getElementById('btnViewJSON').addEventListener('click', ()=>{
-      const rows = loadLocal();
-      if(!rows.length){ adminStatus.textContent = 'No local submissions yet.'; return; }
-      const header = ['timestamp','firstName','lastName','household','address1','address2','city','state','postal','country','email','phone','notes','consent'];
-      const json = JSON.stringify(rows.map(r => Object.fromEntries(header.map((k,i)=>[k,r[i]]))), null, 2);
-      const w = window.open(); w.document.write('<pre>'+json.replace(/[&<>]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt'}[s]))+'</pre>');
-    });
-    document.getElementById('btnClear').addEventListener('click', ()=>{
-      if(!confirm('Clear all local submissions from this browser? This cannot be undone.')) return;
-      saveLocal([]); adminStatus.textContent = 'Local submissions cleared.';
     });
   </script>
 </body>
