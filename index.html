@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- NO MEMBERS VERSION v8 -->
+  <!-- NO CONSENT, NO MEMBERS v9 -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Christopher & Halifax Wedding Address Request</title>
@@ -38,11 +38,8 @@
     .section{padding:0 18px 20px 18px;}
     .section + .section{padding-top:8px;}
     .fieldbox{
-      background:var(--panel);
-      border-radius:12px;
-      padding:16px;
-      box-shadow:inset 0 0 0 2px #cfe8d6, inset 0 2px 6px rgba(0,0,0,.06);
-      color:#0c3a1a;
+      background:var(--panel); border-radius:12px; padding:16px;
+      box-shadow:inset 0 0 0 2px #cfe8d6, inset 0 2px 6px rgba(0,0,0,.06); color:#0c3a1a;
     }
     .legend{display:flex; align-items:center; gap:.5rem; font-weight:800; color:#0c3a1a; margin:2px 0 10px 0; font-size:15px; text-transform:uppercase; letter-spacing:.06em}
     .grid{display:grid; gap:14px}
@@ -53,8 +50,8 @@
     label{font-size:13px; color:#0c3a1a; font-weight:800; text-transform:uppercase; letter-spacing:.04em}
     .req:after{content:"*"; color:#fefefe; background:#0d7e2e; border-radius:6px; padding:0 6px; margin-left:6px}
     input,select,textarea{
-      width:100%; box-sizing:border-box; margin-top:6px; border-radius:10px;
-      border:1px solid #9bd0a8; padding:10px 12px; font-size:15px; background:#fff; color:#10351f;
+      width:100%; box-sizing:border-box; margin-top:6px; border-radius:10px; border:1px solid #9bd0a8;
+      padding:10px 12px; font-size:15px; background:#fff; color:#10351f;
       outline:none; transition:box-shadow .15s, border-color .15s;
     }
     input:focus,select:focus,textarea:focus{border-color:var(--vt-green); box-shadow:0 0 0 4px var(--ring)}
@@ -171,9 +168,9 @@
 
   <script>
     /* Your deployed Web App URL (ends with /exec) */
-    const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbwc6l7u95UWYqRlhdl_jLr7_P0HOC50bUc4g60lPybZ5E8MZRe9r_vF1NRQ3WpBFBzWKQ/exec';
+    const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbydRxtiMyzYWXBihzgv1FCIoWWU4udTpicQF-nSvCMyKg4dHZcZhm1WmogDwzimrzr9Gg/exec';
 
-    const STORAGE_KEY = 'wedding-address-submissions:v8';
+    const STORAGE_KEY = 'wedding-address-submissions:v9';
     const form = document.getElementById('addressForm');
     const successBanner = document.getElementById('successBanner');
     const addAnotherBtn = document.getElementById('addAnother');
