@@ -55,6 +55,12 @@
     .btn:hover{background:#f5fff7; border-color:#fff}
     .banner{display:none; margin:0 18px 16px 18px; border-radius:10px; background:#e9f7ec; color:#0e5a2a; border:1px solid #c6e6cf; padding:12px 14px;}
     footer{text-align:center; color:#e6f7ea; font-size:12px; padding:10px 18px 22px 18px}
+
+    /* Household members repeater */
+    .member-row{display:grid; grid-template-columns:1fr 1fr auto; gap:12px; align-items:end}
+    .remove-member{border:1px solid #d3e9d8; background:#fff; color:#0b5d1e; border-radius:10px; padding:9px 12px; cursor:pointer}
+    .remove-member:hover{background:#f5fff7}
+    .hint{font-size:12px; color:#0d4e25; opacity:.9; margin-top:8px}
   </style>
 </head>
 <body>
@@ -64,7 +70,6 @@
         <div class="eyebrow">Christopher Poole & Halifax Nicolson</div>
         <h1>We'd love your mailing address</h1>
         <p>Help us send wedding invitations. Takes ~60 seconds. Thank you!</p>
-        <!-- Decorative Green Mountains -->
         <svg class="mountains" viewBox="0 0 600 80" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0,80 L80,30 130,60 180,40 230,70 300,20 360,60 420,35 500,75 600,50 600,80 Z" fill="#0d7e2e"></path>
           <path d="M0,80 L60,45 120,65 170,35 220,60 280,25 340,55 410,28 480,68 540,40 600,60 600,80 Z" fill="#084819" opacity=".9"></path>
@@ -90,6 +95,16 @@
             <label>Household / Envelope name</label>
             <input name="household" type="text" placeholder="e.g., Chuck & Dianne Norris" />
           </div>
+        </div>
+
+        <!-- NEW: Household members -->
+        <div class="fieldbox" style="margin-top:16px">
+          <div class="legend">Household members (optional)</div>
+          <div id="membersList" class="grid" style="gap:12px"></div>
+          <div class="row" style="margin-top:8px">
+            <button id="btnAddMember" type="button" class="btn">+ Add person</button>
+          </div>
+          <p class="hint">Add everyone you want listed on the envelope. We’ll still use the address below for mailing.</p>
         </div>
 
         <div class="fieldbox" style="margin-top:16px">
@@ -161,42 +176,102 @@
   </div>
 
   <script>
-    /* Paste your existing Google Apps Script Web App URL (ends with /exec) */
-    const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbwUEFifynWGqxZeAWO37JaHLOSzZSShbyEtTU7hz7t53C7ekP9bLoGQeg_uEvic0CMCcQ/exec';
+    /* Your deployed Web App URL (ends with /exec) */
+    const ENDPOINT_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';
 
-    const STORAGE_KEY = 'wedding-address-submissions:v3';
+    const STORAGE_KEY = 'wedding-address-submissions:v4';
     const form = document.getElementById('addressForm');
     const successBanner = document.getElementById('successBanner');
     const addAnotherBtn = document.getElementById('addAnother');
+    const membersList = document.getElementById('membersList');
+    const btnAddMember = document.getElementById('btnAddMember');
 
     function loadLocal(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch{ return []; } }
     function saveLocal(rows){ localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); }
 
-    function toRow(d){
-      return [new Date().toISOString(), d.firstName||'', d.lastName||'', d.household||'', d.address1||'', d.address2||'', d.city||'', d.state||'', d.postal||'', d.country||'', d.email||'', d.phone||'', d.notes||'', d.consent ? 'Yes' : 'No'];
+    function addMemberRow(first='', last=''){
+      const row = document.createElement('div');
+      row.className = 'member-row';
+      row.innerHTML = `
+        <div>
+          <label>First name</label>
+          <input type="text" class="m-first" value="${first.replace(/"/g,'&quot;')}"/>
+        </div>
+        <div>
+          <label>Last name</label>
+          <input type="text" class="m-last" value="${last.replace(/"/g,'&quot;')}"/>
+        </div>
+        <div>
+          <button type="button" class="remove-member" aria-label="Remove person">Remove</button>
+        </div>
+      `;
+      row.querySelector('.remove-member').addEventListener('click', ()=> row.remove());
+      membersList.appendChild(row);
     }
+
+    function gatherMembers(){
+      const items = [];
+      membersList.querySelectorAll('.member-row').forEach(r=>{
+        const first = (r.querySelector('.m-first')?.value || '').trim();
+        const last  = (r.querySelector('.m-last')?.value  || '').trim();
+        if(first || last) items.push({first, last});
+      });
+      return items;
+    }
+
+    btnAddMember.addEventListener('click', ()=> addMemberRow());
+    // start with one empty row for convenience
+    addMemberRow();
+
+    function toRow(d, peopleJoined){
+      return [
+        new Date().toISOString(),
+        d.firstName||'', d.lastName||'', d.household||'',
+        d.address1||'', d.address2||'', d.city||'',
+        d.state||'', d.postal||'', d.country||'',
+        d.email||'', d.phone||'', d.notes||'',
+        peopleJoined,                       // NEW: People
+        d.consent ? 'Yes' : 'No'
+      ];
+    }
+
     function formToObject(fd){
-      const obj = {}; for (const [k,v] of fd.entries()) obj[k] = (v||'').toString().trim();
+      const obj = {}; for(const [k,v] of fd.entries()) obj[k] = (v||'').toString().trim();
       obj.consent = document.getElementById('consent').checked;
+      // Build people array: include primary + any members
+      const members = gatherMembers();
+      const primaryName = ((obj.firstName||'') + ' ' + (obj.lastName||'')).trim();
+      if(primaryName) members.unshift({first: obj.firstName||'', last: obj.lastName||''});
+      obj.people = JSON.stringify(members);
+      obj.peopleJoined = members.map(p => (p.first||'') + ' ' + (p.last||'')).map(s=>s.trim()).filter(Boolean).join('; ');
       return obj;
     }
 
     async function postToEndpoint(payload){
       if(!ENDPOINT_URL) return { ok:false, skipped:true };
       try{
+        // Send as form-encoded (Apps Script reads via e.parameter)
+        const body = new URLSearchParams(payload).toString();
         const res = await fetch(ENDPOINT_URL, {
-          method:'POST',
-          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+          body
         });
-        try { return await res.json(); } catch { return { ok: res.ok }; }
+        let data = null;
+        try { data = await res.json(); } catch { data = { ok: res.ok }; }
+        return data;
       }catch(err){
         console.warn('Endpoint post failed:', err);
         return { ok:false, error:String(err) };
       }
     }
 
-    function clearForm(){ form.reset(); document.getElementById('consent').checked = false; }
+    function clearForm(){
+      form.reset();
+      document.getElementById('consent').checked = false;
+      membersList.innerHTML = '';
+      addMemberRow();
+    }
 
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
@@ -205,9 +280,8 @@
       for(const k of required){ if(!fd.get(k) || !String(fd.get(k)).trim()){ alert('Please complete all required fields.'); return; } }
 
       const payload = formToObject(fd);
-
       const rows = loadLocal();
-      rows.push(toRow(payload));
+      rows.push(toRow(payload, payload.peopleJoined));
       saveLocal(rows);
 
       const r = await postToEndpoint(payload);
