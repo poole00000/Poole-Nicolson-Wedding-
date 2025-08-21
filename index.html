@@ -13,10 +13,9 @@
     html,body{height:100%;margin:0}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:var(--ink);
-      background:
-        radial-gradient(1200px 600px at 20% -10%, rgba(11,93,30,.15), transparent),
-        radial-gradient(900px 500px at 100% 10%, rgba(19,94,53,.12), transparent),
-        linear-gradient(180deg,#e9f3ec 0%,#e0efe6 100%);
+      background: radial-gradient(1200px 600px at 20% -10%, rgba(11,93,30,.15), transparent),
+                  radial-gradient(900px 500px at 100% 10%, rgba(19,94,53,.12), transparent),
+                  linear-gradient(180deg,#e9f3ec 0%,#e0efe6 100%);
     }
     .wrap{max-width:880px;margin:0 auto;padding:40px 16px;}
     .plate{
@@ -24,12 +23,9 @@
       box-shadow:0 18px 40px rgba(0,0,0,.18), inset 0 0 0 6px var(--vt-green-dark), inset 0 0 0 10px var(--vt-rail);
       overflow:hidden; position:relative;
     }
-    .plate::before,.plate::after{
-      content:""; position:absolute; left:0; right:0; height:14px;
-      background:linear-gradient(180deg,#09712a,#0b5d1e);
-    }
+    .plate::before,.plate::after{content:""; position:absolute; left:0; right:0; height:14px; background:linear-gradient(180deg,#09712a,#0b5d1e)}
     .plate::before{top:0} .plate::after{bottom:0}
-    header{text-align:center; padding:26px 24px 0 24px;}
+    header{text-align:center; padding:26px 24px 0 24px; position:relative;}
     header .eyebrow{letter-spacing:.18em; text-transform:uppercase; font-size:12px; opacity:.95}
     header h1{margin:10px 0 6px 0; font-weight:800; font-size:clamp(26px,4vw,36px); letter-spacing:.02em}
     header p{margin:0 0 10px 0; font-size:14px; opacity:.9}
@@ -42,24 +38,19 @@
     }
     .legend{display:flex; align-items:center; gap:.5rem; font-weight:800; color:#0c3a1a; margin:2px 0 10px 0; font-size:15px; text-transform:uppercase; letter-spacing:.06em}
     .grid{display:grid; gap:14px}
-    @media(min-width:720px){
-      .grid.cols-2{grid-template-columns:1fr 1fr}
-      .grid.cols-3{grid-template-columns:1fr 1fr 1fr}
-    }
+    @media(min-width:720px){ .grid.cols-2{grid-template-columns:1fr 1fr} .grid.cols-3{grid-template-columns:1fr 1fr 1fr} }
     label{font-size:13px; color:#0c3a1a; font-weight:800; text-transform:uppercase; letter-spacing:.04em}
     .req:after{content:"*"; color:#fefefe; background:#0d7e2e; border-radius:6px; padding:0 6px; margin-left:6px}
     input,select,textarea{
       width:100%; box-sizing:border-box; margin-top:6px; border-radius:10px; border:1px solid #9bd0a8;
-      padding:10px 12px; font-size:15px; background:#fff; color:#10351f;
-      outline:none; transition:box-shadow .15s, border-color .15s;
+      padding:10px 12px; font-size:15px; background:#fff; color:#10351f; outline:none; transition:box-shadow .15s, border-color .15s;
     }
     input:focus,select:focus,textarea:focus{border-color:var(--vt-green); box-shadow:0 0 0 4px var(--ring)}
     .row{display:flex; align-items:center; gap:10px}
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-      padding:12px 18px; border-radius:12px; border:2px solid #e7f5ea;
-      background:var(--paper); color:var(--vt-green); font-weight:800; text-transform:uppercase; letter-spacing:.06em;
-      box-shadow:0 8px 18px rgba(11,93,30,.25); cursor:pointer;
+      padding:12px 18px; border-radius:12px; border:2px solid #e7f5ea; background:var(--paper); color:var(--vt-green);
+      font-weight:800; text-transform:uppercase; letter-spacing:.06em; box-shadow:0 8px 18px rgba(11,93,30,.25); cursor:pointer;
     }
     .btn:hover{background:#f5fff7; border-color:#fff}
     .banner{display:none; margin:0 18px 16px 18px; border-radius:10px; background:#e9f7ec; color:#0e5a2a; border:1px solid #c6e6cf; padding:12px 14px;}
@@ -153,6 +144,10 @@
             <label>Notes for the couple</label>
             <textarea name="notes" rows="3" placeholder="Anything we should know about mailing to you?"></textarea>
           </div>
+          <div class="row" style="margin-top:10px">
+            <input id="consent" name="consent" type="checkbox" />
+            <label for="consent">I consent to sharing this info for wedding invitations and related updates.</label>
+          </div>
         </div>
 
         <div class="row" style="padding:14px 2px 18px 2px">
@@ -166,10 +161,10 @@
   </div>
 
   <script>
-    /* Your deployed Web App URL (ends with /exec) */
+    /* Paste your existing Google Apps Script Web App URL (ends with /exec) */
     const ENDPOINT_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';
 
-    const STORAGE_KEY = 'wedding-address-submissions:v7';
+    const STORAGE_KEY = 'wedding-address-submissions:v3';
     const form = document.getElementById('addressForm');
     const successBanner = document.getElementById('successBanner');
     const addAnotherBtn = document.getElementById('addAnother');
@@ -178,39 +173,30 @@
     function saveLocal(rows){ localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); }
 
     function toRow(d){
-      return [
-        new Date().toISOString(),
-        d.firstName||'', d.lastName||'', d.household||'',
-        d.address1||'', d.address2||'', d.city||'',
-        d.state||'', d.postal||'', d.country||'',
-        d.email||'', d.phone||'', d.notes||''
-      ];
+      return [new Date().toISOString(), d.firstName||'', d.lastName||'', d.household||'', d.address1||'', d.address2||'', d.city||'', d.state||'', d.postal||'', d.country||'', d.email||'', d.phone||'', d.notes||'', d.consent ? 'Yes' : 'No'];
     }
-
     function formToObject(fd){
-      const obj = {}; for(const [k,v] of fd.entries()) obj[k] = (v||'').toString().trim();
+      const obj = {}; for (const [k,v] of fd.entries()) obj[k] = (v||'').toString().trim();
+      obj.consent = document.getElementById('consent').checked;
       return obj;
     }
 
     async function postToEndpoint(payload){
       if(!ENDPOINT_URL) return { ok:false, skipped:true };
       try{
-        const body = new URLSearchParams(payload).toString();
         const res = await fetch(ENDPOINT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-          body
+          method:'POST',
+          headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
         });
-        let data = null;
-        try { data = await res.json(); } catch { data = { ok: res.ok }; }
-        return data;
+        try { return await res.json(); } catch { return { ok: res.ok }; }
       }catch(err){
         console.warn('Endpoint post failed:', err);
         return { ok:false, error:String(err) };
       }
     }
 
-    function clearForm(){ form.reset(); }
+    function clearForm(){ form.reset(); document.getElementById('consent').checked = false; }
 
     form.addEventListener('submit', async (e)=>{
       e.preventDefault();
@@ -220,10 +206,14 @@
 
       const payload = formToObject(fd);
 
-      const rows = loadLocal(); rows.push(toRow(payload)); saveLocal(rows);
+      const rows = loadLocal();
+      rows.push(toRow(payload));
+      saveLocal(rows);
 
       const r = await postToEndpoint(payload);
-      if(!r.ok && !r.skipped){ console.warn('Saved locally; could not reach Sheets right now.'); }
+      if(!r.ok && !r.skipped){
+        console.warn('Saved locally; could not reach Sheets right now.');
+      }
 
       successBanner.style.display = 'block';
       addAnotherBtn.style.display = 'inline-flex';
